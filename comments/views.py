@@ -2,6 +2,7 @@
 from utils.views import BaseView
 from setting.database import DBManager
 
+
 class CommentCreateListView(BaseView):
     template = 'comments/list.j2'
 

@@ -1,0 +1,21 @@
+{% extends "base.j2" %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Город</th>
+            <th>Количество комментириев</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for city in cities %}
+            <tr>
+                <td>{{ city.1 }}</td>
+                <td>{{ city.3 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

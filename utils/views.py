@@ -1,5 +1,7 @@
 import os
 import json
+from urllib.parse import parse_qs
+
 from jinja2 import Environment, FileSystemLoader
 
 from utils.utils import RequestMethods
@@ -20,6 +22,7 @@ class BaseView:
         """
         Отправка
         """
+        # Определяем тип запроса. Если метод GET то вызывается метод self.get()
         method = getattr(self, RequestMethods.METHODS.get(self.request_method), None)
         if method:
             return method()
@@ -42,7 +45,7 @@ class BaseView:
         input = self.env['wsgi.input']
         lenght = int(self.env.get('CONTENT_LENGTH')) if self.env.get('CONTENT_LENGTH') else 0
         data = input.read(lenght).decode() if lenght > 0 else '{}'
-        return json.loads(data)
+        return parse_qs(data)
 
     def get_context_data(self, **kwargs):
         context = kwargs

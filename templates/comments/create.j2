@@ -1,0 +1,49 @@
+{% extends "base.j2" %}
+
+{% block content %}
+    <form method="POST">
+        <div class="row">
+            {% with label='Имя', name='first_name', type='text' %}
+                {% include '_fields/_input_field.j2' %}
+            {% endwith %}
+            {% with label='Фамилия', name='second_name', type='text' %}
+                {% include '_fields/_input_field.j2' %}
+            {% endwith %}
+            {% with label='Отчество', name='last_name', type='text' %}
+                {% include '_fields/_input_field.j2' %}
+            {% endwith %}
+        </div>
+
+        <div class="row">
+            {% with label='Регион', name='region_id', values=regions, class='js-select-region-ajax', url='/cities/choices/ajax/' %}
+                {% include '_fields/_select_field.j2' %}
+            {% endwith %}
+            <div id="select-city">
+                {% with label='Город', name='city_id', values=cities %}
+                    {% include '_fields/_select_field.j2' %}
+                {% endwith %}
+            </div>
+
+        </div>
+
+        <div class="row">
+            {% with label='Контактный телефон', name='phone', type='text' %}
+                {% include '_fields/_input_field.j2' %}
+            {% endwith %}
+            {% with label='e-mail', name='email', type='text' %}
+                {% include '_fields/_input_field.j2' %}
+            {% endwith %}
+        </div>
+
+        <div class="row">
+            {% with label='Комментарий', name='text', type='text' %}
+                {% include '_fields/_textarea_field.j2' %}
+            {% endwith %}
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="submit">Добавить</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

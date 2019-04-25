@@ -1,0 +1,11 @@
+<div class="col-md-4">
+    <div class="form-group">
+        <label for="id-{{ name }}">{{ label }}</label>
+        <select class="form-control {{ class }}" name="{{ name }}" id="id-{{ name }}" data-url="{{ url }}" required>
+        <option disabled selected value> </option>
+            {% for value in values %}
+                <option value="{{ value.0 }}">{{ value.1 }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

@@ -1,6 +1,5 @@
 import re
 import os
-from wsgiref import simple_server
 
 SETTING_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(SETTING_DIR)
@@ -24,14 +23,20 @@ def set_env(file_path) -> None:
 set_env(os.path.join(SETTING_DIR, '.env_local'))
 
 
-# region wsgi server
-
-
 def app(env, response_method):
+    """
+    АПП для гуникорна
+    """
+
+    # Путь запроса
     path = env.get('PATH_INFO', '').lstrip('/')
+    # Метод запроса GET/POST
     method = env.get('REQUEST_METHOD')
 
     from setting.urls import urls
+    # Роутинг. Если регулярка выполнилась,
+    # то берётся привязаный class_view (контроллер)
+    # и контроллер обрабатывает запрос
     for regex, class_view in urls:
         match = re.search(regex, path)
         if match is not None:
@@ -40,12 +45,8 @@ def app(env, response_method):
             response = view.dispatch()
             if response:
                 return response
-
+    # Если контроллер не найдет возвращаем ошибку
     response_method('404 NOT FOUND', [('Content-Type', 'text/plain')])
     return ['Page Not Found.'.encode('utf-8')]
 
 
-server = simple_server.WSGIServer(('127.0.0.1', 8000), simple_server.WSGIRequestHandler)
-server.set_app(app)
-server.serve_forever()
-# endregion

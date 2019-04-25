@@ -1,34 +1,48 @@
+import json
 
 from utils.views import BaseView
 from setting.database import DBManager
 
-class CommentCreateListView(BaseView):
+
+class CommentListView(BaseView):
     template = 'comments/list.j2'
 
     def get(self):
-        cursor = DBManager().db_cursor()
-        sql = f'SELECT * FROM comments'
-        cursor.execute(sql)
-        comments = cursor.fetchall()
+        table_name = 'comments ' \
+                     'LEFT JOIN regions ' \
+                     'ON comments.region_id = regions.id ' \
+                     'LEFT JOIN cities ' \
+                     'ON comments.city_id = cities.id'
+        comments = DBManager().select(table_name=table_name)
         self._response_200()
         return self._render(comments=comments)
 
-    def post(self):
-        self._response_200()
-        return [f'Comment CREATE {self.post_data}'.encode('utf-8')]
 
-
-class CommentDetailUpdateDeleteView(BaseView):
-    template = 'list.j2'
+class CommentCreateView(BaseView):
+    template = 'comments/create.j2'
 
     def get(self):
+        regions = DBManager().select(table_name='regions')
         self._response_200()
-        return ['Comment DETAIL'.encode('utf-8'), 'Comment DETAIL'.encode('utf-8')]
+        return self._render(regions=regions)
 
-    def put(self):
-        self._response_200()
-        return ['Comment UPDATE'.encode('utf-8')]
+    def post(self):
+        fields = ['first_name', 'second_name', 'last_name', 'region_id', 'city_id', 'phone', 'email', 'text']
+        values = [f"'{self.post_data.get(field, [' '])[0]}'" for field in fields]
+        DBManager().create('comments', fields, values)
+        # self._response_200()
+        self.response_method('301 Moved Permanently', [('Location', '/comments/')])
+        return self._render()
+
+
+class CommentDeleteView(BaseView):
 
     def delete(self):
+        DBManager().delete('comments', f'id = {self.args[0]}')
         self._response_200()
         return ['Comment DELETE'.encode('utf-8')]
+
+
+
+
+

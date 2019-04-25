@@ -4,7 +4,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style src="{{ static_path }}css/reviews.css"></style>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <style>
+        a{
+            color: black;
+        }
+        table{
+            margin-top: 20px;
+        }
+        #select-city{
+            display: contents;
+        }
+        .nav-item{
+            padding-right: 5px;
+        }
+        .btn-primary{
+            margin-top: 30px;
+        }
+        .min-width{
+            min-width: 350px;
+        }
+    </style>
 
     <title>
         {% block title %}
@@ -13,9 +35,69 @@
     </title>
 </head>
 <body>
+
+
+<div class="container">
+    {% include '_navigate_panel.j2' %}
     {% block content %}
     {% endblock %}
+</div>
 
-    <script src="{{ static_path }}js/reviews.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+
+    {# Если скрипт до сих пор не вынесен. Забыл или недоразобрал nginx #}
+
+    document.addEventListener('DOMContentLoaded', function() { // Аналог $(document).ready(function(){
+        {# Событие на изменение региона (подгружается новое поле городов) #}
+        var ajaxElements = document.querySelectorAll('.js-select-region-ajax');
+        [].forEach.call(ajaxElements, function (ajaxElement) {
+            ajaxElement.addEventListener('change', function (e) {
+                var url = ajaxElement.getAttribute('data-url');
+                var select_value = ajaxElement.options[ajaxElement.selectedIndex].value;
+                url += select_value + '/';
+                sender.ajaxByUrl(url, 'GET', actions.load_cities_choices);
+            });
+        });
+
+        {# Событие на кнопку удаления комментария #}
+        var commentDeleteButtons = document.querySelectorAll('.js-comment-delete');
+        [].forEach.call(commentDeleteButtons, function (commentDeleteButton) {
+            commentDeleteButton.addEventListener('click', function (e) {
+                var url = commentDeleteButton.getAttribute('data-url');
+                sender.ajaxByUrl(url, 'DELETE', actions.comment_ajax_delete());
+            });
+        });
+    });
+
+    var sender = {
+        ajaxByUrl: function (url, method, action) {
+            var request=new XMLHttpRequest();
+            request.open(method, url);
+            // Задаём функцию, которая будет вызываться при изменении состояния готовности запроса
+            request.onreadystatechange = function () {
+                // Проверяем состояние готовности и статус запроса
+                if (request.readyState === 4 && request.status === 200) {
+                    // Десериализуем полученную JSON строку в объект JavaScript
+                    action(request.responseText);
+                }
+            };
+            request.send();
+        },
+    };
+
+    var actions ={
+        load_cities_choices: function (html) {
+            var select_city = document.querySelector('#select-city');
+            select_city.innerHTML = html;
+        },
+        comment_ajax_delete: function (html) {
+            window.location = '/comments/';
+        },
+    };
+</script>
 </body>
 </html>

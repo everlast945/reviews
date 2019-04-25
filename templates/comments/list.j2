@@ -1,31 +1,44 @@
 {% extends "base.j2" %}
 
 {% block content %}
-<table>
-    <thead>
+    <div class="row">
+    <div class="col-md-12">
+        <a href="/comments/create/" class="btn btn-primary float-right">Добавить комментарий</a>
+    </div>
+    </div>
+    <table class="table" >
+        <thead>
         <tr>
             <th>Фамилия</th>
             <th>Имя</th>
             <th>Отчество</th>
+            <th>Регион</th>
+            <th>Город</th>
             <th>Телефон</th>
             <th>Почта</th>
             <th>Комментарий</th>
+            <th></th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+
+        <tbody>
         {% for comment in comments %}
             <tr>
-                <td>{{comment.1 }}</td>
-                <td>{{comment.0 }}</td>
                 <td>{{comment.2 }}</td>
+                <td>{{comment.1 }}</td>
                 <td>{{comment.3 }}</td>
+                <td>{{comment.10 }}</td>
+                <td>{{comment.12 }}</td>
                 <td>{{comment.4 }}</td>
                 <td>{{comment.5 }}</td>
+                <td class="min-width">{{comment.6 }}</td>
+                <td>
+                    <button type="button" class="btn text-danger js-comment-delete" data-url="/comments/{{ comment.0 }}/">
+                        delete
+                    </button>
+                </td>
             </tr>
         {% endfor %}
-    </tbody>
-</table>
-
-
-
+        </tbody>
+    </table>
 {% endblock %}

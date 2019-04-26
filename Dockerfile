@@ -6,4 +6,5 @@ COPY ./src/requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
-CMD ["gunicorn"  , "-b", "0.0.0.0:8000", "--chdir", "./reviews", "setting.wsgi:app"]
+
+CMD ["gunicorn", "setting.wsgi:app", "--chdir", "./reviews", "--bind", "0.0.0.0:8000", "--workers", "5", "--timeout", "120" ]

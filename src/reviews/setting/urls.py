@@ -13,4 +13,5 @@ urls = [
 
     (r'^regions/$', StatListView),
     (r'^cities/by_region/(\d+)/$', CitiesByRegionListView),
+
 ]

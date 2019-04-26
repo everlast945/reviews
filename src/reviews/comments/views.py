@@ -1,7 +1,5 @@
-import json
-
-from utils.views import BaseView
 from setting.database import DBManager
+from utils.views import BaseView
 
 
 class CommentListView(BaseView):

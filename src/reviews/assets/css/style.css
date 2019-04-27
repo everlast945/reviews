@@ -1,18 +1,23 @@
 a{
     color: black;
 }
+
 table{
     margin-top: 20px;
 }
+
 #select-city{
     display: contents;
 }
+
 .nav-item{
     padding-right: 5px;
 }
+
 .btn-primary{
     margin-top: 30px;
 }
+
 .min-width{
     min-width: 350px;
 }

@@ -13,12 +13,12 @@ class FieldDB:
         self.type = type
 
 
-class TableBD:
+class TableDB:
     """
     Временная структура для описания таблицы
     """
 
-    def __init__(self, name: str, fields: FieldDB, init_list, hookups='') -> None:
+    def __init__(self, name: str, fields: FieldDB, init_list=[], hookups='') -> None:
         super().__init__()
         self.fields = fields
         self.name = name
@@ -60,7 +60,7 @@ class DBManager:
         """
         # todo: Костыльно, надо на модели переписать с нормальными типами
         tables = self._tables_list()
-        for table in tables:  # type: TableBD
+        for table in tables:  # type: TableDB
             fields_with_type = ", ".join([f'{field.name} {field.type}' for field in table.fields])
             sql = f'create table if not exists {table.name} (id integer, {fields_with_type}, PRIMARY KEY (id){table.hookups})'
             cursor.execute(sql)
@@ -87,7 +87,7 @@ class DBManager:
         regions_field_list = [
             FieldDB('name', 'text'),
         ]
-        regions_table = TableBD('regions', regions_field_list, regions)
+        regions_table = TableDB('regions', regions_field_list, regions)
 
         cities = [
             ('Краснодар', 1),
@@ -107,7 +107,7 @@ class DBManager:
                          'FOREIGN KEY (region_id) ' \
                          'REFERENCES regions(region_id) ' \
                          'ON DELETE CASCADE'
-        cities_table = TableBD('cities', cities_field_list, cities, cities_hookups)
+        cities_table = TableDB('cities', cities_field_list, cities, cities_hookups)
 
         comments = [
             ("Рудин", "Стив", "Петрович", "98887771111", "email1@gmail.com", "Комментарии бывают двух видов: комментарии к постам и ответные комментарии. И каждый вид пишется в своём окне. С комментариями к постам ни у кого проблем нет. А вот с ответными  у некоторых наших друзей есть.", 1, 1),
@@ -144,7 +144,7 @@ class DBManager:
                            'FOREIGN KEY (city_id) ' \
                            'REFERENCES cities(city_id) ' \
                            'ON DELETE SET NULL'
-        comments_table = TableBD('comments', comments_field_list, comments)
+        comments_table = TableDB('comments', comments_field_list, comments)
 
         tables = [regions_table, cities_table, comments_table]
         return tables

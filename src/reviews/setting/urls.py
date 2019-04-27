@@ -1,17 +1,11 @@
-from cities.views import CitiesChoiceAjaxView, CitiesByRegionListView
-from comments.views import CommentListView, CommentDeleteView, CommentCreateView
-from regions.views import StatListView
+from regions.comments.views import CommentListView
+from regions.urls import urls as regions_urls
+from regions.comments.urls import urls as regions_comments_urls
+from regions.cities.urls import urls as regions_cities_urls
 
 urls = [
     (r'^$', CommentListView),
-
-    (r'^comments/$', CommentListView),
-    (r'^comments/create/$', CommentCreateView),
-    (r'^comments/(\d+)/$', CommentDeleteView),
-
-    (r'^cities/choices/ajax/(\d+)/$', CitiesChoiceAjaxView),
-
-    (r'^regions/$', StatListView),
-    (r'^cities/by_region/(\d+)/$', CitiesByRegionListView),
-
-]
+] \
+       + regions_urls \
+       + regions_comments_urls \
+       + regions_cities_urls

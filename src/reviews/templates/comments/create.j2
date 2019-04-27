@@ -15,7 +15,7 @@
         </div>
 
         <div class="row">
-            {% with label='Регион', name='region_id', values=regions, class='js-select-region-ajax', url='/cities/choices/ajax/' %}
+            {% with label='Регион', name='region_id', values=regions, class='js-select-region-ajax', url='/regions/cities/choices/ajax/' %}
                 {% include '_fields/_select_field.j2' %}
             {% endwith %}
             <div id="select-city">

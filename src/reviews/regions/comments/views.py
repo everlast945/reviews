@@ -29,7 +29,7 @@ class CommentCreateView(BaseView):
         values = [f"'{self.post_data.get(field, [' '])[0]}'" for field in fields]
         DBManager().create('comments', fields, values)
         # self._response_200()
-        self.response_method('301 Moved Permanently', [('Location', '/comments/')])
+        self.response_method('301 Moved Permanently', [('Location', '/regions/comments/')])
         return self._render()
 
 

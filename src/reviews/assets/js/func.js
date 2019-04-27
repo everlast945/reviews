@@ -1,5 +1,7 @@
 var sender = {
-    ajaxByUrl: function (url, method, action) {
+
+    // ajax отправка запроса и выполнение функции
+    ajaxWithAction: function (url, method, action) {
         var request=new XMLHttpRequest();
         request.open(method, url);
         // Задаём функцию, которая будет вызываться при изменении состояния готовности запроса
@@ -20,6 +22,6 @@ var actions ={
         select_city.innerHTML = html;
     },
     comment_ajax_delete: function (html) {
-        window.location = '/comments/';
+        window.location = '/regions/comments/';
     },
 };

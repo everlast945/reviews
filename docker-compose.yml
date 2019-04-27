@@ -9,8 +9,12 @@ services:
   #  command: ./docker-entrypoint-web.sh
     volumes:
       - ./src:/opt/web
-    ports:
-      - "8000:8000"
+    networks:
+      net:
+        aliases:
+          - web
+#    ports:
+#      - "8000:8000"
 
   nginx:
     restart: always

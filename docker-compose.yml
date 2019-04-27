@@ -19,8 +19,9 @@ services:
   nginx:
     restart: always
     image: nginx
+    env_file: ./.env
     ports:
-      - "80:80"
+      - "${NGINX_PORT}:80"
     volumes:
       - ./nginx/:/etc/nginx/conf.d/
       - ./src/reviews/assets:/static

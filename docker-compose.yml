@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  web:
+    restart: always
+    build: ./
+    env_file: ./.env
+    working_dir: /opt/web
+  #  command: ./docker-entrypoint-web.sh
+    volumes:
+      - ./src:/opt/web
+    networks:
+      net:
+        aliases:
+          - web
+#    ports:
+#      - "8000:8000"
+
+  nginx:
+    restart: always
+    image: nginx
+    env_file: ./.env
+    ports:
+      - "${NGINX_PORT}:80"
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+      - ./src/reviews/assets:/static
+    depends_on:
+      - web
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge

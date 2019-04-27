@@ -1,5 +1,4 @@
 import os
-import json
 from urllib.parse import parse_qs
 
 from jinja2 import Environment, FileSystemLoader
